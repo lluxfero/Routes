@@ -3,12 +3,17 @@ from module_routes import plan_routes  # импортируем функцию �
 
 import matplotlib.pyplot as plt
 
-def plot_routes(planned_routes):
+def plot_routes(atms, planned_routes):
     for day, route_info in planned_routes.items():
         plt.figure(figsize=(10, 6))
         plt.title(f'Маршруты на день {day + 1}')
         plt.xlabel('Координата X')
         plt.ylabel('Координата Y')
+
+        atms = [item for item in atms if item not in route_info['unassigned']]
+        successs_x = [atm.x for atm in atms]
+        successs_y = [atm.y for atm in atms]
+        plt.scatter(successs_x, successs_y, c='green', marker='x', label='Все хорошо')
 
         for group_id, route in route_info['routes'].items():
             x_coords = [atm.x for atm in route]
@@ -83,4 +88,4 @@ planned_routes = plan_routes(
 )
 
 log_routes(planned_routes, 'routes.txt')
-plot_routes(planned_routes)
+plot_routes(atms, planned_routes)
