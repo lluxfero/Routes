@@ -1,13 +1,18 @@
 from module_atm import ATM  # импортируем класс ATM из модуля module_atm
 import random  # импортируем модуль random для генерации случайных значений
 
+# - моделирует потребности банкоматов в обслуживании, 
+# - генерирует список банкоматов с случайными параметрами,
+# - управляет их состоянием на протяжении нескольких дней
+
 # функция для генерации списка банкоматов с заданными параметрами
 def generate_atms(num_atms):
-    atms = []  # создаем пустой список для банкоматов
+    # создаем пустой список для банкоматов
+    atms = []  
     for atm_id in range(num_atms):
         # задаем случайные параметры для бункеров и статистических характеристик банкомата
         receive_bin_capacity = random.randint(1000, 5000)  # емкость бункера приема
-        dispense_bin_capacity = random.randint(1000, 5000)  # емкость бункера выдачи
+        dispense_bin_capacity = random.randint(1000, 5000) # емкость бункера выдачи
         receive_mean = random.uniform(100, 500)  # среднее количество поступлений
         receive_variance = random.uniform(10, 50)  # дисперсия поступлений
         dispense_mean = random.uniform(100, 500)  # среднее количество выдач
@@ -33,7 +38,8 @@ def generate_atms(num_atms):
 
 # функция для моделирования потребности банкоматов в обслуживании на несколько дней вперед
 def simulate_service_needs(atms, num_days):
-    atms_needing_service = {day: [] for day in range(num_days)}  # создаем словарь для хранения банкоматов, нуждающихся в обслуживании каждый день
+    # создаем словарь для хранения банкоматов, нуждающихся в обслуживании каждый день
+    atms_needing_service = {day: [] for day in range(num_days)}  
 
     for day in range(num_days):
         for atm in atms:
@@ -41,7 +47,8 @@ def simulate_service_needs(atms, num_days):
                 # для первого дня определяем необходимость в обслуживании на основе текущих данных
                 days_until_service = atm.days_until_service_needed()
                 if days_until_service <= 1:
-                    atms_needing_service[day].append(atm)  # добавляем банкомат, если он требует обслуживания
+                    # добавляем банкомат, если он требует обслуживания
+                    atms_needing_service[day].append(atm)  
             else:
                 # обновляем уровни бункеров на следующий день
                 atm.receive_bin_level += atm.receive_mean
@@ -57,4 +64,5 @@ def simulate_service_needs(atms, num_days):
                     # сбрасываем уровни бункеров после обслуживания
                     atm.receive_bin_level = atm.receive_bin_capacity / 2
                     atm.dispense_bin_level = atm.dispense_bin_capacity / 2
-    return atms_needing_service  # возвращаем словарь с банкоматами, нуждающимися в обслуживании
+    # возвращаем словарь с банкоматами, нуждающимися в обслуживании
+    return atms_needing_service  
